@@ -15,7 +15,7 @@
             color: #1a1a1a;
         }
         
-        /* Header with Tech 4 Humanity Logo */
+        /* Header */
         .header {
             background: white;
             padding: 20px;
@@ -169,70 +169,12 @@
             transform: scale(1.05);
         }
         
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+        .btn-secondary {
+            background: #0047AB;
         }
         
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 50px;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 90%;
-        }
-        
-        .modal h3 {
-            font-size: 2em;
-            color: #1a472a;
-            margin-bottom: 20px;
-        }
-        
-        .modal input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1.1em;
-            margin: 10px 0;
-        }
-        
-        .modal input:focus {
-            outline: none;
-            border-color: #0047AB;
-        }
-        
-        .privacy-notice {
-            font-size: 0.85em;
-            color: #666;
-            margin: 20px 0;
-            line-height: 1.6;
-        }
-        
-        .privacy-notice a {
-            color: #0047AB;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2em;
-            cursor: pointer;
-            color: #666;
+        .btn-secondary:hover {
+            background: #003580;
         }
         
         /* Footer */
@@ -280,7 +222,7 @@
             <div class="logo">Tech <span>4</span> Humanity</div>
             <nav class="nav">
                 <a href="#books">Books</a>
-                <a href="#privacy">Privacy</a>
+                <a href="privacy.html">Privacy</a>
                 <a href="https://tech4humanity.net">About</a>
             </nav>
         </div>
@@ -326,7 +268,7 @@
                     to navigate this unprecedented moment.
                 </p>
                 
-                <button class="btn" onclick="openDownload('family-guide')">Download Free</button>
+                <a href="Australian-Family-Guide-FINAL-READABLE.epub" class="btn" download>Download Free (EPUB)</a>
             </div>
         </div>
         
@@ -361,30 +303,8 @@
                     alternatives, and frameworks shaping digital child protection.
                 </p>
                 
-                <button class="btn" onclick="openDownload('7-dimensions')">Download Free</button>
+                <a href="7-Dimensions-Digital-Child-Protection.epub" class="btn" download>Download Free (EPUB)</a>
             </div>
-        </div>
-    </div>
-    
-    <!-- Download Modal -->
-    <div class="modal" id="downloadModal">
-        <div class="modal-content" style="position: relative;">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h3>Download Your Free Book</h3>
-            <p style="margin-bottom: 20px;">Enter your email to receive your download link</p>
-            
-            <form onsubmit="handleDownload(event)">
-                <input type="email" id="emailInput" placeholder="your@email.com" required>
-                <input type="hidden" id="bookId">
-                
-                <div class="privacy-notice">
-                    By downloading, you agree to our <a href="#privacy">Privacy Policy</a>. 
-                    We'll send you the download link and occasional updates about Tech 4 Humanity books. 
-                    Unsubscribe anytime. Your data is stored securely and deleted after 12 months of inactivity.
-                </div>
-                
-                <button type="submit" class="btn" style="width: 100%; margin: 0;">Get Download Link</button>
-            </form>
         </div>
     </div>
     
@@ -402,63 +322,13 @@
                 <a href="https://ai-sweetspots.tech4humanity.net">AI Sweet Spots Research</a>
                 <a href="mailto:troy@tech4humanity.net">Contact Us</a>
             </div>
-            <div id="privacy">
-                <h4>Privacy & Data</h4>
-                <a href="#privacy-policy">Privacy Policy</a>
-                <a href="#data-retention">Data Retention</a>
-                <a href="#gdpr">GDPR Compliance</a>
+            <div>
+                <h4>Books</h4>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="https://www.amazon.com/kindle-dbs/entity/author/B0DQXJ7X8L">Amazon KDP (Coming Soon)</a>
+                <a href="#">Apple Books (Coming Soon)</a>
             </div>
         </div>
     </footer>
-    
-    <script>
-        let currentBook = '';
-        
-        function openDownload(bookId) {
-            currentBook = bookId;
-            document.getElementById('bookId').value = bookId;
-            document.getElementById('downloadModal').classList.add('active');
-        }
-        
-        function closeModal() {
-            document.getElementById('downloadModal').classList.remove('active');
-        }
-        
-        async function handleDownload(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('emailInput').value;
-            const bookId = currentBook;
-            
-            try {
-                // Call your Lambda function via MCP Bridge
-                const response = await fetch('https://m5oqj21chd.execute-api.ap-southeast-2.amazonaws.com/lambda/invoke', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        functionName: 'book-download-handler',
-                        payload: {
-                            email: email,
-                            bookId: bookId,
-                            timestamp: new Date().toISOString(),
-                            source: 'github-pages'
-                        }
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.downloadUrl) {
-                    // Direct download from S3 presigned URL
-                    window.location.href = data.downloadUrl;
-                    closeModal();
-                    alert('Download starting! Check your email for future updates.');
-                }
-            } catch (error) {
-                console.error('Download error:', error);
-                alert('Download temporarily unavailable. Please try again or contact troy@tech4humanity.net');
-            }
-        }
-    </script>
 </body>
 </html>
