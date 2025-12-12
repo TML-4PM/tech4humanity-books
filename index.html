@@ -2,41 +2,463 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tech 4 Humanity Books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech 4 Humanity Books | Professional Guides for the Digital Age</title>
+    <meta name="description" content="Evidence-based guides for families and policymakers navigating social media, AI, and digital child protection.">
+    
     <style>
-        body { font-family: -apple-system, sans-serif; margin: 0; color: #1a1a1a; }
-        .hero { background: linear-gradient(135deg, #1a472a 0%, #0047AB 100%); color: white; padding: 80px 20px; text-align: center; }
-        .hero h1 { font-size: 3em; margin-bottom: 20px; }
-        .books { max-width: 1200px; margin: 60px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 60px; }
-        .book { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        .book img { width: 100%; height: auto; }
-        .book-info { padding: 40px; }
-        .book h2 { font-size: 2em; color: #1a472a; margin-bottom: 15px; }
-        .btn { display: inline-block; padding: 15px 40px; background: #DC143C; color: white; text-decoration: none; border-radius: 8px; margin: 10px 10px 0 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+        }
+        
+        /* Header with Tech 4 Humanity Logo */
+        .header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1a472a;
+        }
+        
+        .logo span {
+            color: #DC143C;
+        }
+        
+        .nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #1a472a;
+            font-weight: 500;
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1a472a 0%, #0047AB 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.5em;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        /* Books Grid */
+        .books {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 60px;
+        }
+        
+        .book {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .book:hover {
+            transform: translateY(-10px);
+        }
+        
+        .book-cover {
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            text-align: center;
+        }
+        
+        .book-cover img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        
+        .book-info {
+            padding: 40px;
+        }
+        
+        .book h2 {
+            font-size: 2em;
+            color: #1a472a;
+            margin-bottom: 15px;
+        }
+        
+        .book-stats {
+            display: flex;
+            gap: 20px;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .stat {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: #DC143C;
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #DC143C;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 10px 10px 0 0;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #b01030;
+            transform: scale(1.05);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal h3 {
+            font-size: 2em;
+            color: #1a472a;
+            margin-bottom: 20px;
+        }
+        
+        .modal input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        
+        .modal input:focus {
+            outline: none;
+            border-color: #0047AB;
+        }
+        
+        .privacy-notice {
+            font-size: 0.85em;
+            color: #666;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .privacy-notice a {
+            color: #0047AB;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 20px;
+            margin-top: 80px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer h4 {
+            color: #DC143C;
+            margin-bottom: 20px;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .footer a:hover {
+            color: #DC143C;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .books { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>Tech 4 Humanity Books</h1>
-        <p>Professional guides for navigating the digital age</p>
-    </div>
-    <div class="books">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Tech <span>4</span> Humanity</div>
+            <nav class="nav">
+                <a href="#books">Books</a>
+                <a href="#privacy">Privacy</a>
+                <a href="https://tech4humanity.net">About</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">📚 NEW: December 2025</div>
+        <h1>Professional Guides for the Digital Age</h1>
+        <p>Evidence-based resources for families and policymakers navigating social media, AI, and digital child protection</p>
+    </section>
+    
+    <!-- Books -->
+    <div class="books" id="books">
         <div class="book">
-            <img src="Australian-Family-Guide-large.jpg" alt="Australian Family Guide">
+            <div class="book-cover">
+                <img src="Australian-Family-Guide-large.jpg" alt="The Australian Family Guide to Social Media">
+            </div>
             <div class="book-info">
                 <h2>The Australian Family Guide to Social Media</h2>
-                <p>20 chapters • 95,000 words • Evidence-based strategies</p>
-                <a href="Australian-Family-Guide-FINAL-READABLE.epub" class="btn" download>Download</a>
+                <p style="color: #666; font-style: italic; margin-bottom: 20px;">
+                    What Parents Need to Know Before the Age Restrictions Begin
+                </p>
+                
+                <div class="book-stats">
+                    <div class="stat">
+                        <div class="stat-number">20</div>
+                        <div class="stat-label">Chapters</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">95K</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Studies</div>
+                    </div>
+                </div>
+                
+                <p style="margin: 20px 0;">
+                    Australia is the first major nation to restrict social media for children under 16. 
+                    This comprehensive guide gives families the patterns, evidence, and practical strategies 
+                    to navigate this unprecedented moment.
+                </p>
+                
+                <button class="btn" onclick="openDownload('family-guide')">Download Free</button>
             </div>
         </div>
+        
         <div class="book">
-            <img src="7-Dimensions-large.jpg" alt="7 Dimensions">
+            <div class="book-cover">
+                <img src="7-Dimensions-large.jpg" alt="7 Dimensions of Digital Child Protection">
+            </div>
             <div class="book-info">
                 <h2>7 Dimensions of Digital Child Protection</h2>
-                <p>9 articles • 20,000 words • Policy analysis</p>
-                <a href="7-Dimensions-Digital-Child-Protection.epub" class="btn" download>Download</a>
+                <p style="color: #666; font-style: italic; margin-bottom: 20px;">
+                    Beyond the Ban: Australia's Social Media Minimum Age
+                </p>
+                
+                <div class="book-stats">
+                    <div class="stat">
+                        <div class="stat-number">9</div>
+                        <div class="stat-label">Articles</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">20K</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">7</div>
+                        <div class="stat-label">Dimensions</div>
+                    </div>
+                </div>
+                
+                <p style="margin: 20px 0;">
+                    A comprehensive analysis for policy makers, educators, and researchers. 
+                    Examines account access, tracking, retention, migration, infrastructure, 
+                    alternatives, and frameworks shaping digital child protection.
+                </p>
+                
+                <button class="btn" onclick="openDownload('7-dimensions')">Download Free</button>
             </div>
         </div>
     </div>
+    
+    <!-- Download Modal -->
+    <div class="modal" id="downloadModal">
+        <div class="modal-content" style="position: relative;">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3>Download Your Free Book</h3>
+            <p style="margin-bottom: 20px;">Enter your email to receive your download link</p>
+            
+            <form onsubmit="handleDownload(event)">
+                <input type="email" id="emailInput" placeholder="your@email.com" required>
+                <input type="hidden" id="bookId">
+                
+                <div class="privacy-notice">
+                    By downloading, you agree to our <a href="#privacy">Privacy Policy</a>. 
+                    We'll send you the download link and occasional updates about Tech 4 Humanity books. 
+                    Unsubscribe anytime. Your data is stored securely and deleted after 12 months of inactivity.
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%; margin: 0;">Get Download Link</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Tech 4 Humanity</h4>
+                <p>Building technology that serves humanity</p>
+                <p style="margin-top: 20px;">&copy; 2025 Tech 4 Humanity</p>
+            </div>
+            <div>
+                <h4>Resources</h4>
+                <a href="https://tech4humanity.net">Main Website</a>
+                <a href="https://ai-sweetspots.tech4humanity.net">AI Sweet Spots Research</a>
+                <a href="mailto:troy@tech4humanity.net">Contact Us</a>
+            </div>
+            <div id="privacy">
+                <h4>Privacy & Data</h4>
+                <a href="#privacy-policy">Privacy Policy</a>
+                <a href="#data-retention">Data Retention</a>
+                <a href="#gdpr">GDPR Compliance</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        let currentBook = '';
+        
+        function openDownload(bookId) {
+            currentBook = bookId;
+            document.getElementById('bookId').value = bookId;
+            document.getElementById('downloadModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('downloadModal').classList.remove('active');
+        }
+        
+        async function handleDownload(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailInput').value;
+            const bookId = currentBook;
+            
+            try {
+                // Call your Lambda function via MCP Bridge
+                const response = await fetch('https://m5oqj21chd.execute-api.ap-southeast-2.amazonaws.com/lambda/invoke', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        functionName: 'book-download-handler',
+                        payload: {
+                            email: email,
+                            bookId: bookId,
+                            timestamp: new Date().toISOString(),
+                            source: 'github-pages'
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.downloadUrl) {
+                    // Direct download from S3 presigned URL
+                    window.location.href = data.downloadUrl;
+                    closeModal();
+                    alert('Download starting! Check your email for future updates.');
+                }
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Download temporarily unavailable. Please try again or contact troy@tech4humanity.net');
+            }
+        }
+    </script>
 </body>
 </html>
